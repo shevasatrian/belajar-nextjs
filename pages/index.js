@@ -1,9 +1,11 @@
 
 import { Inter } from 'next/font/google'
-import Layout from '@/layout'
 import { useEffect } from 'react'
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
 const inter = Inter({ subsets: ['latin'] })
+const LayoutComponent = dynamic(() => import("@/layout"))
 
 export default function Main({ children }) {
 
@@ -17,11 +19,14 @@ export default function Main({ children }) {
   }, [])
   return (
     <>
-      <Layout metaTitle="Home">
+      <LayoutComponent metaTitle="Home">
         <div>
           <p className='my-2'>Home</p>
+          {/* <Image src="/next.png" width={400} height={400} alt="next img" />
+          <img src="/next.png" style={{ width: 400, height: 400 }} alt="next img" /> */}
+
         </div>
-      </Layout>
+      </LayoutComponent>
     </>
   )
 }
