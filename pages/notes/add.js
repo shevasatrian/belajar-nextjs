@@ -5,12 +5,13 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { Box, Flex, Grid, GridItem, Card, Heading, Text, Button, Input, Textarea } from '@chakra-ui/react'
+import { useMutation } from '@/hooks/useMutation'
 
 const inter = Inter({ subsets: ['latin'] })
 const LayoutComponent = dynamic(() => import("@/layout"))
 
 export default function AddNotes() {
-
+  const { mutate } = useMutation()
   const router = useRouter() 
   const [notes, setNotes] = useState({
     title: "",
@@ -18,16 +19,11 @@ export default function AddNotes() {
   })
 
   const HandleSumbit = async () => {
-    try {
-      const response = await fetch("https://paace-f178cafcae7b.nevacloud.io/api/notes", { method: 'POST', headers: {"Content-type": "application/json"}, body: JSON.stringify(notes),})
-      const result = await response.json()
-      if (result?.success) {
-        router.push("/notes")
-      }
-      console.log('result => ', result)
-    } catch (error) {
-      
-    }
+    const response = await mutate({ 
+      url: 'https://paace-f178cafcae7b.nevacloud.io/api/notes',
+      payload: notes,
+    })
+    console.log('response => ', response)
   }
   
   return (
