@@ -6,13 +6,16 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { Box, Flex, Grid, GridItem, Card, CardBody, CardHeader, CardFooter, Heading, Text, Button, Spinner } from '@chakra-ui/react'
 import { useQueries } from '@/hooks/useQueries'
+import fetcher from '@/utils/fetcher'
+import useSWR from "swr"
 
 const inter = Inter({ subsets: ['latin'] })
 const LayoutComponent = dynamic(() => import("@/layout"))
 
 export default function Notes() {
-  const { data, isLoading } = useQueries({ prefixUrl: "https://paace-f178cafcae7b.nevacloud.io/api/notes", })
+  // const { data, isLoading } = useQueries({ prefixUrl: "https://paace-f178cafcae7b.nevacloud.io/api/notes", })
   // console.log("loading => ", data)
+  const { data, isLoading } = useSWR("https://paace-f178cafcae7b.nevacloud.io/api/notes", fetcher, { revalidateOnFocus: true })
   const router = useRouter() 
   const [notes, setNotes] = useState();
 
