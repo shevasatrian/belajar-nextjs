@@ -1,6 +1,7 @@
+import { headers } from "@/next.config";
 import { useCallback, useEffect, useState } from "react"
 
-export const useQueries = ({ prefixUrl = "" } = {}) => {
+export const useQueries = ({ prefixUrl = "", headers = {} } = {}) => {
   const [data, setData] = useState({
     data: null,
     isLoading: true,
@@ -8,13 +9,13 @@ export const useQueries = ({ prefixUrl = "" } = {}) => {
   })
 
   const fetchingData = useCallback(
-    async ( {url = "", method = 'GET'} = {}) => {
+    async ( {url = "", method = 'GET', headers = {} } = {}) => {
     // setData({
     //   ...data,
     //   isLoading: true,
     // })
     try {
-      const response = await fetch(url, { method } );
+      const response = await fetch(url, { method, headers } );
       const result = await response.json();
       setData({
         ...data,
@@ -33,7 +34,7 @@ export const useQueries = ({ prefixUrl = "" } = {}) => {
 
   useEffect(() => {
     if (prefixUrl) {
-      fetchingData({ url: prefixUrl })
+      fetchingData({ url: prefixUrl, headers: headers })
     }
   }, [])
 
